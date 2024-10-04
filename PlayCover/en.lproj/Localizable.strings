@@ -289,4 +289,4 @@
 "macos.version" = "This app can be installed from Mac App Store";
 "alert.install.anyway" = "Install Anyway";
 "alert.open.appstore" = "Open Mac App Store";
-
+"settings.menu.installPlayTools" = "Install PlayTools?";

@@ -13,10 +13,13 @@ class InstallPreferences: NSObject, ObservableObject {
     @objc @AppStorage("AlwaysInstallPlayTools") var alwaysInstallPlayTools = true
 
     @AppStorage("DefaultAppType") var defaultAppType: LSApplicationCategoryType = .none
-
+    @AppStorage("PlayToolsSettings") var playToolsSettings = "preferences.toggle.showInstallPopup"
     @AppStorage("ShowInstallPopup") var showInstallPopup = false
 }
-
+var playToolsSettingsList = [
+    NSLocalizedString("preferences.toggle.showInstallPopup", comment: ""),
+    NSLocalizedString("button.Yes", comment: ""),
+    NSLocalizedString("button.No", comment: "")]
 struct InstallSettings: View {
     public static var shared = InstallSettings()
 
@@ -37,20 +40,32 @@ struct InstallSettings: View {
             }
             Spacer()
                 .frame(height: 20)
-            Toggle("preferences.toggle.showInstallPopup", isOn: $installPreferences.showInstallPopup)
-            GroupBox {
-                VStack {
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Toggle("preferences.toggle.alwaysInstallPlayTools",
-                                   isOn: $installPreferences.alwaysInstallPlayTools)
-                        }
-                        Spacer()
+            HStack {
+                Text("settings.menu.installPlayTools")
+                Spacer()
+
+                Picker("", selection: installPreferences.$playToolsSettings) {
+                    ForEach(playToolsSettingsList, id: \.self) { value in
+                        Text(value)
                     }
-                    Spacer()
-                        .frame(height: 20)
                 }
-            }.disabled(installPreferences.showInstallPopup)
+                .frame(width: 225)
+            }.onChange(of: installPreferences.playToolsSettings) { setting in
+                switch setting {
+                case "Ask":
+                    installPreferences.showInstallPopup = true
+                    installPreferences.alwaysInstallPlayTools = false
+                case "Yes":
+                    installPreferences.showInstallPopup = false
+                    installPreferences.alwaysInstallPlayTools = true
+                case "No":
+                    installPreferences.showInstallPopup = false
+                    installPreferences.alwaysInstallPlayTools = false
+                default:
+                    installPreferences.showInstallPopup = true
+                    installPreferences.alwaysInstallPlayTools = false
+                }
+            }
         }
         .padding(20)
         .frame(width: 400, height: 200)
