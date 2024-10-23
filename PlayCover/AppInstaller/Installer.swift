@@ -118,12 +118,17 @@ class Installer {
                 InstallVM.shared.next(.finish, 0.95, 1.0)
                 returnCompletion(finalURL)
             } catch {
-                Log.shared.error(error)
+                if error.localizedDescription.contains("End-of-central-directory signature not found") {
+                    ipa.releaseTempDir()
+                    InstallVM.shared.next(.failed, 0.95, 1.0)
+                    returnCompletion(URL(string: "shouldRetry"))
+                } else {
+                    Log.shared.error(error)
+                    ipa.releaseTempDir()
+                    InstallVM.shared.next(.failed, 0.95, 1.0)
+                    returnCompletion(nil)
+                }
 
-                ipa.releaseTempDir()
-
-                InstallVM.shared.next(.failed, 0.95, 1.0)
-                returnCompletion(nil)
             }
         }
     }

@@ -170,20 +170,35 @@ class DownloadApp {
             completion(alert.runModal() == .alertFirstButtonReturn)
         }
     }
-
+var times = 0
     private func proceedInstall(_ url: URL?, deleteIPA: Bool = true) {
         if let url = url {
-            Installer.install(ipaUrl: url, export: false, returnCompletion: { _ in
-                Task { @MainActor in
-                    if deleteIPA {
-                        FileManager.default.delete(at: url)
+            Installer.install(ipaUrl: url, export: false, returnCompletion: { myurl in
+                if myurl?.absoluteString != "shouldRetry" {
+                    Task { @MainActor in
+                        if deleteIPA {
+                            FileManager.default.delete(at: url)
+                        }
+                        AppsVM.shared.fetchApps()
+                        StoreVM.shared.resolveSources()
+                        NotifyService.shared.notify(
+                            NSLocalizedString("notification.appInstalled", comment: ""),
+                            NSLocalizedString("notification.appInstalled.message", comment: ""))
+                        self.downloadVM.storeAppData = nil
                     }
-                    AppsVM.shared.fetchApps()
-                    StoreVM.shared.resolveSources()
-                    NotifyService.shared.notify(
-                        NSLocalizedString("notification.appInstalled", comment: ""),
-                        NSLocalizedString("notification.appInstalled.message", comment: ""))
-                    self.downloadVM.storeAppData = nil
+                } else {
+                    self.times += 1
+                    if self.times < 15 {
+                        print(self.times)
+                        if let url = URL(string: self.app!.link) {
+                            while DownloadVM.shared.inProgress {
+                                print("end download in progress")
+                               // Log.shared.error(PlayCoverError.waitDownload)
+                            }
+                            let redirectHandler = RedirectHandler(url: url) // checking page redirect
+                            self.proceedDownload(redirectHandler.getFinal())
+                        }
+                    }
                 }
             })
         }
