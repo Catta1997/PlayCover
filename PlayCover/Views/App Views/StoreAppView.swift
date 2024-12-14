@@ -194,7 +194,6 @@ struct StoreAppConditionalView: View {
                                 },
                                 error: {_, _ in
                                     Image(systemName: "exclamationmark.triangle")
-                                        .font(.system(size: 24))
                                         .opacity(0.5)
                                 }
                             )

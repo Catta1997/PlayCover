@@ -52,11 +52,6 @@ struct StoreInfoAppView: View {
                                 Image(nsImage: $0)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                            },
-                            error: {_, _ in
-                                Image(systemName: "exclamationmark.triangle")
-                                    .font(.system(size: 24))
-                                    .opacity(0.5)
                             }
                         )
                     }
