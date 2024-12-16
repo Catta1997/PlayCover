@@ -137,9 +137,13 @@ struct StoreAppConditionalView: View {
                                         .aspectRatio(contentMode: .fit)
                                 },
                                 error: {_, _ in
-                                    Image(systemName: "exclamationmark.triangle")
-                                        .font(.system(size: 24))
-                                        .opacity(0.5)
+                                    Rectangle()
+                                        .fill(.regularMaterial)
+                                        .overlay {
+                                            Image(systemName: "exclamationmark.triangle")
+                                                .font(.system(size: 24))
+                                                .opacity(0.5)
+                                        }
                                 }
                             )
                         }
@@ -193,8 +197,12 @@ struct StoreAppConditionalView: View {
                                         .aspectRatio(contentMode: .fit)
                                 },
                                 error: {_, _ in
-                                    Image(systemName: "exclamationmark.triangle")
-                                        .opacity(0.5)
+                                    Rectangle()
+                                        .fill(.regularMaterial)
+                                        .overlay {
+                                            Image(systemName: "exclamationmark.triangle")
+                                                .opacity(0.5)
+                                        }
                                 }
                             )
                         }
