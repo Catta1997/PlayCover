@@ -123,12 +123,19 @@ struct StoreAppConditionalView: View {
                                             .aspectRatio(contentMode: .fit)
                                     } else {
                                         Rectangle()
-                                            .fill(.regularMaterial)
-                                            .overlay {
-                                                ProgressView()
-                                                    .progressViewStyle(.circular)
-                                                    .controlSize(.small)
-                                            }
+                                             .fill(.regularMaterial)
+                                             .overlay {
+                                                 if loadingLocalIcon {
+                                                     ProgressView()
+                                                         .progressViewStyle(.circular)
+                                                         .controlSize(.small)
+                                                 } else {
+                                                     Image(systemName: "exclamationmark.triangle")
+                                                         .font(.system(size: 24))
+                                                         .opacity(0.5)
+                                                 }
+                                             }
+                                             .task(self.waitForIconLoad)
                                     }
                                 },
                                 image: {
@@ -136,13 +143,16 @@ struct StoreAppConditionalView: View {
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                 },
-                                error: {_, _ in
+                                error: {_, retry in
                                     Rectangle()
                                         .fill(.regularMaterial)
                                         .overlay {
                                             Image(systemName: "exclamationmark.triangle")
                                                 .font(.system(size: 24))
                                                 .opacity(0.5)
+                                        }
+                                        .task {
+                                            _ = retry
                                         }
                                 }
                             )
@@ -183,12 +193,18 @@ struct StoreAppConditionalView: View {
                                             .aspectRatio(contentMode: .fit)
                                     } else {
                                         Rectangle()
-                                            .fill(.regularMaterial)
-                                            .overlay {
-                                                ProgressView()
-                                                    .progressViewStyle(.circular)
-                                                    .controlSize(.small)
-                                            }
+                                             .fill(.regularMaterial)
+                                             .overlay {
+                                                 if loadingLocalIcon {
+                                                     ProgressView()
+                                                         .progressViewStyle(.circular)
+                                                         .controlSize(.small)
+                                                 } else {
+                                                     Image(systemName: "exclamationmark.triangle")
+                                                         .opacity(0.5)
+                                                 }
+                                             }
+                                             .task(self.waitForIconLoad)
                                     }
                                 },
                                 image: {
@@ -196,12 +212,15 @@ struct StoreAppConditionalView: View {
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                 },
-                                error: {_, _ in
+                                error: {_, retry in
                                     Rectangle()
                                         .fill(.regularMaterial)
                                         .overlay {
                                             Image(systemName: "exclamationmark.triangle")
                                                 .opacity(0.5)
+                                        }
+                                        .task {
+                                            _ = retry
                                         }
                                 }
                             )
