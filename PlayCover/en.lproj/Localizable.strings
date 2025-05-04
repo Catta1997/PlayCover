@@ -300,3 +300,6 @@
 "folder.button.add" = "Add new Folder";
 "folder.button.edit" = "Edit Folder";
 "folder.remove.alert" = "Are you sure to remove app folder \"%@\" folder? This action will not uninstall the apps.";
+"alert.start.anyway" = "Start Anyway";
+"alert.version.title" = "New Version Available";
+"alert.version.text" = "A new version for %@ is available. Do you want to download it?";
