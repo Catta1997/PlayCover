@@ -67,7 +67,7 @@ struct AppLibraryView: View {
         .navigationTitle("sidebar.appLibrary")
         .navigationSubtitle(folder.name)
         .toolbar {
-            ToolbarItemGroup(placement: .primaryAction) {
+            ToolbarItem(placement: .primaryAction) {
                 Button {
                     if installVM.inProgress {
                         Log.shared.error(PlayCoverError.waitInstallation)
@@ -80,28 +80,34 @@ struct AppLibraryView: View {
                     Image(systemName: "plus.circle")
                         .help("playapp.add")
                 }
+            }
+            ToolbarItem(placement: .primaryAction) {
                 Spacer()
+            }
+            ToolbarItem(placement: .primaryAction) {
                 Button {
                     showSettings.toggle()
                 } label: {
                     Image(systemName: "gear")
                 }
                 .disabled(selected == nil)
+            }
+            ToolbarItem(placement: .primaryAction) {
                 Picker("Grid View Layout", selection: $isList) {
                     Image(systemName: "square.grid.2x2")
                         .tag(false)
                     Image(systemName: "list.bullet")
                         .tag(true)
+                }.pickerStyle(.segmented)
+            }
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    addSheetApps.toggle()
+                } label: {
+                    Image(systemName: "pencil")
+                        .help("folder.button.edit")
                 }
-                .pickerStyle(.segmented)
-                if isFolder {
-                    Button {
-                        addSheetApps.toggle()
-                    } label: {
-                        Image(systemName: "pencil")
-                            .help("folder.button.edit")
-                    }
-                }
+                .disabled(!isFolder)
             }
         }
         .searchable(text: $searchString, placement: .toolbar)
