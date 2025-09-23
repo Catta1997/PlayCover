@@ -45,8 +45,10 @@ class PlayApp: BaseApp {
             }
 
             AppsVM.shared.fetchApps()
-            if await VersionCheck.shared.checkNewVersion(myApp: self) {return}
-
+            if InstallPreferences.shared.checkNewVersion,
+               await VersionCheck.shared.checkNewVersion(myApp: self) {
+                return
+            }
             settings.sync()
 
             if try !Entitlements.areEntitlementsValid(app: self) {

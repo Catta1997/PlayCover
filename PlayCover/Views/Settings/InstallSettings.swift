@@ -17,6 +17,8 @@ class InstallPreferences: NSObject, ObservableObject {
     @AppStorage("ShowInstallPopup") var showInstallPopup = false
 
     @AppStorage("ShowAppStorePopup") var showAppStorePopup = true
+    
+    @AppStorage("CheckNewVersion") var checkNewVersion = true
 }
 
 struct InstallSettings: View {
@@ -40,9 +42,10 @@ struct InstallSettings: View {
             Spacer()
                 .frame(height: 20)
             Toggle("preferences.toggle.showAppStorePopup", isOn: $installPreferences.showAppStorePopup)
+            Toggle("preferences.toggle.checkNewVersion", isOn: $installPreferences.checkNewVersion)
+            Toggle("preferences.toggle.showInstallPopup", isOn: $installPreferences.showInstallPopup)
             Spacer()
                 .frame(height: 20)
-            Toggle("preferences.toggle.showInstallPopup", isOn: $installPreferences.showInstallPopup)
             GroupBox {
                 VStack {
                     HStack {
