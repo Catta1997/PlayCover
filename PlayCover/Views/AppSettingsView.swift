@@ -109,7 +109,7 @@ struct AppSettingsView: View {
                         Text("settings.tab.info")
                     }
             }
-            .frame(minWidth: 500, minHeight: 250)
+            .frame(minWidth: 500, minHeight: 250, alignment: .topLeading)
             HStack {
                 Spacer()
                 Button("settings.resetSettings") {
